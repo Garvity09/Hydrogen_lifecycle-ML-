@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrogen Life Cycle Cost Analysis & Future Comparison</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-flask-vial H2-icon"></i>
+                <h1>Hydro<span class="gradient-text">LCC</span></h1>
+            </div>
+            <div class="subtitle">Machine Learning & Techno-Economic Life Cycle Cost Simulator</div>
+            <div class="tech-year-badge">
+                <i class="fa-solid fa-calendar-days"></i> Target Year: <span id="badge-year">2026</span>
+            </div>
+        </header>
+
+        <!-- Main Grid Layout -->
+        <main class="dashboard-grid">
+            <!-- Sidebar Controls -->
+            <section class="controls-panel card">
+                <h2><i class="fa-solid fa-sliders"></i> Scenario Variables</h2>
+                
+                <div class="control-group">
+                    <label for="input-year">
+                        <span>Target Year</span>
+                        <span class="value-display" id="val-year">2026</span>
+                    </label>
+                    <input type="range" id="input-year" min="2026" max="2050" value="2026" step="1">
+                    <span class="range-subtext">Drives technology learning rates (CAPEX reduction)</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="input-elec">
+                        <span>Electricity Price ($/MWh)</span>
+                        <span class="value-display" id="val-elec">$50</span>
+                    </label>
+                    <input type="range" id="input-elec" min="20" max="150" value="50" step="1">
+                    <span class="range-subtext">Drives Green/Yellow hydrogen and grid LCOE</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="input-gas">
+                        <span>Natural Gas Price ($/MMBtu)</span>
+                        <span class="value-display" id="val-gas">$6.0</span>
+                    </label>
+                    <input type="range" id="input-gas" min="2" max="18" value="6" step="0.1">
+                    <span class="range-subtext">Drives Gray/Blue hydrogen and gas LCOE</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="input-coal">
+                        <span>Coal Price ($/ton)</span>
+                        <span class="value-display" id="val-coal">$75</span>
+                    </label>
+                    <input type="range" id="input-coal" min="30" max="150" value="75" step="1">
+                    <span class="range-subtext">Drives Brown hydrogen and coal LCOE</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="input-biomass">
+                        <span>Biomass Price ($/ton)</span>
+                        <span class="value-display" id="val-biomass">$60</span>
+                    </label>
+                    <input type="range" id="input-biomass" min="20" max="120" value="60" step="1">
+                    <span class="range-subtext">Drives Biomass-to-H2 production cost</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="input-tax">
+                        <span>Carbon Tax ($/tCO2-eq)</span>
+                        <span class="value-display" id="val-tax">$50</span>
+                    </label>
+                    <input type="range" id="input-tax" min="0" max="250" value="50" step="5">
+                    <span class="range-subtext">Applied to lifecycle carbon footprints</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="input-dr">
+                        <span>Discount Rate / WACC (%)</span>
+                        <span class="value-display" id="val-dr">7.0%</span>
+                    </label>
+                    <input type="range" id="input-dr" min="3" max="12" value="7.0" step="0.5">
+                    <span class="range-subtext">Weighted Average Cost of Capital for CAPEX</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="input-dist">
+                        <span>Transport Distance (km)</span>
+                        <span class="value-display" id="val-dist">500 km</span>
+                    </label>
+                    <input type="range" id="input-dist" min="0" max="2000" value="500" step="50">
+                    <span class="range-subtext">Transmission, compression, storage, and trucking</span>
+                </div>
+            </section>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-main-content">
+                <!-- Top Summary Cards -->
+                <section class="summary-cards">
+                    <div class="summary-card green-card">
+                        <div class="card-header">
+                            <span>Green H₂ LCOH</span>
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <div class="card-value" id="card-lcoh-green">$0.00 <span class="unit">/kg</span></div>
+                        <div class="card-subtext"><span class="ml-pred" id="ml-green">ML Predict: --</span> | <span id="emissions-green">0.5 kg CO₂</span></div>
+                    </div>
+                    <div class="summary-card blue-card">
+                        <div class="card-header">
+                            <span>Blue H₂ LCOH</span>
+                            <i class="fa-solid fa-water"></i>
+                        </div>
+                        <div class="card-value" id="card-lcoh-blue">$0.00 <span class="unit">/kg</span></div>
+                        <div class="card-subtext"><span class="ml-pred" id="ml-blue">ML Predict: --</span> | <span id="emissions-blue">1.5 kg CO₂</span></div>
+                    </div>
+                    <div class="summary-card gray-card">
+                        <div class="card-header">
+                            <span>Gray H₂ LCOH</span>
+                            <i class="fa-solid fa-cloud"></i>
+                        </div>
+                        <div class="card-value" id="card-lcoh-gray">$0.00 <span class="unit">/kg</span></div>
+                        <div class="card-subtext"><span class="ml-pred" id="ml-gray">ML Predict: --</span> | <span id="emissions-gray">10.0 kg CO₂</span></div>
+                    </div>
+                    <div class="summary-card competitor-card">
+                        <div class="card-header">
+                            <span>Cheapest Fuel LCOE</span>
+                            <i class="fa-solid fa-fire-flame-curved"></i>
+                        </div>
+                        <div class="card-value" id="card-cheapest-val">--</div>
+                        <div class="card-subtext" id="card-cheapest-label">Calculating LCOE...</div>
+                    </div>
+                </section>
+
+                <!-- Visualization Row 1 -->
+                <section class="charts-row">
+                    <div class="chart-container card">
+                        <h3><i class="fa-solid fa-chart-bar"></i> LCOH Comparison (Techno-Economic vs. ML)</h3>
+                        <div class="canvas-wrapper">
+                            <canvas id="chart-lcoh-compare"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container card">
+                        <h3><i class="fa-solid fa-chart-pie"></i> Cost Breakdown of Selected H₂ Pathway</h3>
+                        <div class="select-wrapper">
+                            <select id="select-breakdown-pathway">
+                                <option value="green">Green Hydrogen</option>
+                                <option value="blue">Blue Hydrogen</option>
+                                <option value="gray">Gray Hydrogen</option>
+                                <option value="brown">Brown Hydrogen</option>
+                                <option value="biomass">Biomass Hydrogen</option>
+                            </select>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="chart-lcoh-breakdown"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Visualization Row 2 -->
+                <section class="charts-row">
+                    <div class="chart-container card">
+                        <h3><i class="fa-solid fa-chart-line"></i> LCOE Comparison: Hydrogen vs. Other Fuels ($/MWh LHV)</h3>
+                        <div class="canvas-wrapper">
+                            <canvas id="chart-lcoe-compare"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container card">
+                        <h3><i class="fa-solid fa-business-time"></i> Technology Learning Rate Projections (2026-2050)</h3>
+                        <div class="canvas-wrapper">
+                            <canvas id="chart-learning-rate"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ML Insights & Feature Importance Row -->
+                <section class="ml-insights-section card">
+                    <div class="ml-grid">
+                        <div class="ml-metrics-panel">
+                            <h2><i class="fa-solid fa-robot"></i> Machine Learning Model Performance</h2>
+                            <p class="ml-description">
+                                Machine learning models were trained on <strong>10,000 synthetic LCC scenarios</strong> generated from techno-economic bounds.
+                                Below is the performance of the Random Forest Regressors on test data:
+                            </p>
+                            <table class="metrics-table">
+                               <thead>
+                                   <tr>
+                                       <th>Predictive Target</th>
+                                       <th>Model R² Score</th>
+                                       <th>Test MAE</th>
+                                   </tr>
+                               </thead>
+                               <tbody id="metrics-table-body">
+                                   <!-- Filled by JS -->
+                                   <tr><td colspan="3"><i class="fa-solid fa-spinner fa-spin"></i> Loading metadata...</td></tr>
+                               </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="ml-importance-panel">
+                            <h2><i class="fa-solid fa-chart-simple"></i> ML Feature Importance (Drivers)</h2>
+                            <div class="select-wrapper">
+                                <select id="select-importance-target">
+                                    <option value="lcoh_green">Green H₂ Cost Drivers</option>
+                                    <option value="lcoh_blue">Blue H₂ Cost Drivers</option>
+                                    <option value="lcoh_gray">Gray H₂ Cost Drivers</option>
+                                    <option value="lcoh_brown">Brown H₂ Cost Drivers</option>
+                                    <option value="lcoh_biomass">Biomass H₂ Cost Drivers</option>
+                                </select>
+                            </div>
+                            <div class="canvas-wrapper importance-canvas">
+                                <canvas id="chart-feature-importance"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

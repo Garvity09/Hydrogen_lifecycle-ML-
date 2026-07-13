@@ -1,0 +1,230 @@
+{
+    "lcoh_green": {
+        "model_path": "models/model_lcoh_green.pkl",
+        "metrics": {
+            "mae": 0.08731325116224437,
+            "r2": 0.9970702453023521,
+            "baseline_mae": 0.05721039487203555,
+            "baseline_r2": 0.9987169773432786
+        },
+        "feature_importances": {
+            "electricity_price_mwh": 0.9417070714366129,
+            "transport_distance_km": 0.02842493273739496,
+            "year": 0.021968044377965196,
+            "discount_rate": 0.006159474321760673,
+            "carbon_tax": 0.0005153607622235912,
+            "biomass_price_ton": 0.0004138247134042389,
+            "natural_gas_price_mmbtu": 0.0004069191112331486,
+            "coal_price_ton": 0.00040437253940526596
+        }
+    },
+    "lcoh_blue": {
+        "model_path": "models/model_lcoh_blue.pkl",
+        "metrics": {
+            "mae": 0.07000151697312924,
+            "r2": 0.9907983562271468,
+            "baseline_mae": 0.013069899344430091,
+            "baseline_r2": 0.9996618440308006
+        },
+        "feature_importances": {
+            "natural_gas_price_mmbtu": 0.825302189763304,
+            "transport_distance_km": 0.14163279029816678,
+            "carbon_tax": 0.012419407554024414,
+            "discount_rate": 0.011873795590429462,
+            "electricity_price_mwh": 0.0040043034098723295,
+            "year": 0.0029689509883236253,
+            "biomass_price_ton": 0.0009262217148481284,
+            "coal_price_ton": 0.0008723406810312366
+        }
+    },
+    "lcoh_gray": {
+        "model_path": "models/model_lcoh_gray.pkl",
+        "metrics": {
+            "mae": 0.06725347033707485,
+            "r2": 0.9939732010884804,
+            "baseline_mae": 0.004938168729905443,
+            "baseline_r2": 0.9999656748059303
+        },
+        "feature_importances": {
+            "natural_gas_price_mmbtu": 0.45465135812579893,
+            "carbon_tax": 0.4428879649312033,
+            "transport_distance_km": 0.09711550331378058,
+            "discount_rate": 0.002259946165373488,
+            "electricity_price_mwh": 0.0008595566256457505,
+            "biomass_price_ton": 0.0007911200938632969,
+            "coal_price_ton": 0.000738726356442187,
+            "year": 0.0006958243878923846
+        }
+    },
+    "lcoh_brown": {
+        "model_path": "models/model_lcoh_brown.pkl",
+        "metrics": {
+            "mae": 0.10183593382755829,
+            "r2": 0.9934935237651566,
+            "baseline_mae": 0.014118727896509742,
+            "baseline_r2": 0.999867290719055
+        },
+        "feature_importances": {
+            "carbon_tax": 0.8393383574768412,
+            "coal_price_ton": 0.10304612611690019,
+            "transport_distance_km": 0.047039761348235024,
+            "discount_rate": 0.006973185024304743,
+            "year": 0.001185725135841008,
+            "electricity_price_mwh": 0.0009313901755755214,
+            "biomass_price_ton": 0.0007470189534413899,
+            "natural_gas_price_mmbtu": 0.0007384357688610439
+        }
+    },
+    "lcoh_biomass": {
+        "model_path": "models/model_lcoh_biomass.pkl",
+        "metrics": {
+            "mae": 0.05899265275715486,
+            "r2": 0.9868956818089893,
+            "baseline_mae": 0.02017447515131741,
+            "baseline_r2": 0.9983701961907999
+        },
+        "feature_importances": {
+            "biomass_price_ton": 0.6484377045052756,
+            "transport_distance_km": 0.2871556273913994,
+            "discount_rate": 0.024564367820897912,
+            "year": 0.02046603025388548,
+            "carbon_tax": 0.01402491709452976,
+            "electricity_price_mwh": 0.0023691705558249233,
+            "coal_price_ton": 0.0014980817596779272,
+            "natural_gas_price_mmbtu": 0.0014841006185090577
+        }
+    },
+    "lcoe_alt_gas": {
+        "model_path": "models/model_lcoe_alt_gas.pkl",
+        "metrics": {
+            "mae": 0.27818442054156584,
+            "r2": 0.999737514352607,
+            "baseline_mae": 0.0025379634175914357,
+            "baseline_r2": 0.9999999834041696
+        },
+        "feature_importances": {
+            "natural_gas_price_mmbtu": 0.58525590698346,
+            "carbon_tax": 0.41432838799166705,
+            "coal_price_ton": 7.304378900244703e-05,
+            "transport_distance_km": 7.27918300890763e-05,
+            "electricity_price_mwh": 7.137475591627453e-05,
+            "biomass_price_ton": 7.013189070401545e-05,
+            "discount_rate": 6.786634465637789e-05,
+            "year": 6.049641450477219e-05
+        }
+    },
+    "lcoe_alt_coal": {
+        "model_path": "models/model_lcoe_alt_coal.pkl",
+        "metrics": {
+            "mae": 0.23202153427622715,
+            "r2": 0.9998930017377375,
+            "baseline_mae": 0.002562102957088123,
+            "baseline_r2": 0.999999990099316
+        },
+        "feature_importances": {
+            "carbon_tax": 0.9626427857130792,
+            "coal_price_ton": 0.037193760828691844,
+            "transport_distance_km": 2.8357219512225874e-05,
+            "electricity_price_mwh": 2.833331023701631e-05,
+            "biomass_price_ton": 2.803293656914723e-05,
+            "natural_gas_price_mmbtu": 2.794230144355024e-05,
+            "discount_rate": 2.694268271261148e-05,
+            "year": 2.3845007754333254e-05
+        }
+    },
+    "lcoe_alt_diesel": {
+        "model_path": "models/model_lcoe_alt_diesel.pkl",
+        "metrics": {
+            "mae": 0.01539004984252267,
+            "r2": 0.9999998238094348,
+            "baseline_mae": 0.002538530894965362,
+            "baseline_r2": 0.999999996369932
+        },
+        "feature_importances": {
+            "carbon_tax": 0.9999995669003291,
+            "biomass_price_ton": 6.559935474408748e-08,
+            "transport_distance_km": 6.420950458404219e-08,
+            "electricity_price_mwh": 6.30504894578888e-08,
+            "natural_gas_price_mmbtu": 6.258050082414918e-08,
+            "coal_price_ton": 6.000497275976737e-08,
+            "discount_rate": 5.973858755239741e-08,
+            "year": 5.791626101426623e-08
+        }
+    },
+    "lcoe_alt_gasoline": {
+        "model_path": "models/model_lcoe_alt_gasoline.pkl",
+        "metrics": {
+            "mae": 0.014586384285299858,
+            "r2": 0.9999998218261423,
+            "baseline_mae": 0.0025235118095885698,
+            "baseline_r2": 0.9999999958537843
+        },
+        "feature_importances": {
+            "carbon_tax": 0.9999995647081336,
+            "transport_distance_km": 6.719271370927191e-08,
+            "coal_price_ton": 6.559976188106551e-08,
+            "electricity_price_mwh": 6.496503231330582e-08,
+            "biomass_price_ton": 6.209746619945584e-08,
+            "natural_gas_price_mmbtu": 6.04563560309579e-08,
+            "discount_rate": 5.8472254963754574e-08,
+            "year": 5.6508281255461556e-08
+        }
+    },
+    "lcoe_alt_solar": {
+        "model_path": "models/model_lcoe_alt_solar.pkl",
+        "metrics": {
+            "mae": 0.4869769118155394,
+            "r2": 0.9991203443256946,
+            "baseline_mae": 3.5615627085492396,
+            "baseline_r2": 0.9522029059570868
+        },
+        "feature_importances": {
+            "electricity_price_mwh": 0.7291909496241048,
+            "year": 0.2678004532321721,
+            "carbon_tax": 0.002130240417462971,
+            "natural_gas_price_mmbtu": 0.00018094126920863808,
+            "transport_distance_km": 0.00017824840535051047,
+            "coal_price_ton": 0.00017729376277083827,
+            "discount_rate": 0.0001714738547858694,
+            "biomass_price_ton": 0.0001703994341441941
+        }
+    },
+    "lcoe_alt_wind": {
+        "model_path": "models/model_lcoe_alt_wind.pkl",
+        "metrics": {
+            "mae": 0.521118962499218,
+            "r2": 0.9993120198449194,
+            "baseline_mae": 2.6389935450380326,
+            "baseline_r2": 0.9815012128820154
+        },
+        "feature_importances": {
+            "electricity_price_mwh": 0.8905231156021418,
+            "year": 0.10743029121323829,
+            "carbon_tax": 0.001429650405079658,
+            "discount_rate": 0.00012852325421645335,
+            "natural_gas_price_mmbtu": 0.0001244771731218286,
+            "coal_price_ton": 0.0001226553831346266,
+            "transport_distance_km": 0.00012178445478040844,
+            "biomass_price_ton": 0.00011950251428697644
+        }
+    },
+    "lcoe_alt_grid": {
+        "model_path": "models/model_lcoe_alt_grid.pkl",
+        "metrics": {
+            "mae": 0.556764301518242,
+            "r2": 0.9997434251193128,
+            "baseline_mae": 0.0024727288672124637,
+            "baseline_r2": 0.9999999962466924
+        },
+        "feature_importances": {
+            "electricity_price_mwh": 0.6298107955841569,
+            "carbon_tax": 0.3697773292547565,
+            "biomass_price_ton": 7.400937291169298e-05,
+            "transport_distance_km": 7.062100155113563e-05,
+            "discount_rate": 7.057667011817048e-05,
+            "natural_gas_price_mmbtu": 6.98116824346055e-05,
+            "coal_price_ton": 6.856997380181684e-05,
+            "year": 5.8286460269222106e-05
+        }
+    }
+}

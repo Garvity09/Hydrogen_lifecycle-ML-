@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+data/raw_data_scenarios.csv
+models/*.pkl
+.system_generated/
+.idea/
+.vscode/
