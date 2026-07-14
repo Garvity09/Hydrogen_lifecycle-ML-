@@ -93,6 +93,34 @@ header {
     box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
 }
 
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-download {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #6ee7b7;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+.btn-download:hover {
+    background: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    transform: translateY(-1px);
+}
+
 /* Main Layout Grid */
 .dashboard-grid {
     display: grid;

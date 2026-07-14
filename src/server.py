@@ -2,6 +2,7 @@ import os
 import pickle
 import json
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -240,6 +241,13 @@ def get_learning_rate_projections(elec_price: float = 50.0, gas_price: float = 6
         "blue": blue_trend,
         "gray": gray_trend
     }
+
+@app.get("/api/download_data")
+def download_data():
+    csv_path = "data/raw_data_scenarios.csv"
+    if not os.path.exists(csv_path):
+        raise HTTPException(status_code=404, detail="Dataset file not found.")
+    return FileResponse(csv_path, media_type="text/csv", filename="hydrogen_lcc_scenarios.csv")
 
 # Mount static folder
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
