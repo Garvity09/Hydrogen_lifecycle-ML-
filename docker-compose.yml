@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  hydrolcc:
+    build: .
+    container_name: hydrolcc_app
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist scenario datasets and trained model states between builds
+      - ./data:/app/data
+      - ./models:/app/models
+    restart: unless-stopped

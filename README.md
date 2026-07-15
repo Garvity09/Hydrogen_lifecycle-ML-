@@ -85,3 +85,11 @@ python run.py
 ```
 
 Open **[http://localhost:8000](http://localhost:8000)** in your browser to interact with the dashboard.
+
+### 4. Run with Docker
+Alternatively, you can run the complete project inside a Docker container:
+```bash
+# Build the image and start the container
+docker-compose up --build
+```
+This containerizes the FastAPI backend and static dashboard, exposing it on port `8000` with volumes to persist datasets and trained models locally.
