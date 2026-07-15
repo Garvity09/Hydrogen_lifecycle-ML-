@@ -4,6 +4,7 @@ let chartLcohBreakdown = null;
 let chartLcoeCompare = null;
 let chartLearningRate = null;
 let chartFeatureImportance = null;
+let chartCarbonSensitivity = null;
 
 // Global metadata cache for ML insights
 let mlMetadata = null;
@@ -154,6 +155,7 @@ async function triggerAnalysis() {
         renderLcohBreakdownChart(data);
         renderLcoeComparisonChart(data);
         updateLearningRateChart(payload);
+        updateCarbonSensitivityChart(payload);
         
     } catch (err) {
         console.error("Analysis execution error:", err);
@@ -523,4 +525,91 @@ function renderFeatureImportanceChart(target) {
             }
         }
     });
+}
+
+async function updateCarbonSensitivityChart(payload) {
+    try {
+        const url = `${API_BASE}/api/carbon_sensitivity?elec_price=${payload.electricity_price_mwh}&gas_price=${payload.natural_gas_price_mmbtu}&coal_price=${payload.coal_price_ton}&biomass_price=${payload.biomass_price_ton}&dr=${payload.discount_rate}&yr=${payload.year}&dist=${payload.transport_distance_km}`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Failed to fetch carbon sensitivity projections");
+        
+        const data = await response.json();
+        const ctx = document.getElementById("chart-carbon-sensitivity").getContext("2d");
+        
+        if (chartCarbonSensitivity) {
+            chartCarbonSensitivity.data.labels = data.taxes;
+            chartCarbonSensitivity.data.datasets[0].data = data.green;
+            chartCarbonSensitivity.data.datasets[1].data = data.blue;
+            chartCarbonSensitivity.data.datasets[2].data = data.gray;
+            chartCarbonSensitivity.data.datasets[3].data = data.brown;
+            chartCarbonSensitivity.update();
+            return;
+        }
+        
+        chartCarbonSensitivity = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.taxes,
+                datasets: [
+                    {
+                        label: 'Green H₂ LCOH',
+                        data: data.green,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: false,
+                        tension: 0.1,
+                        borderWidth: 3
+                    },
+                    {
+                        label: 'Blue H₂ LCOH',
+                        data: data.blue,
+                        borderColor: '#06b6d4',
+                        backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                        fill: false,
+                        tension: 0.1,
+                        borderWidth: 3
+                    },
+                    {
+                        label: 'Gray H₂ LCOH',
+                        data: data.gray,
+                        borderColor: '#8a99ad',
+                        backgroundColor: 'rgba(138, 153, 173, 0.1)',
+                        fill: false,
+                        tension: 0.1,
+                        borderWidth: 3
+                    },
+                    {
+                        label: 'Brown H₂ LCOH',
+                        data: data.brown,
+                        borderColor: '#d97706',
+                        backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                        fill: false,
+                        tension: 0.1,
+                        borderWidth: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#f3f4f6', font: { family: 'Outfit' } } }
+                },
+                scales: {
+                    y: {
+                        title: { display: true, text: 'LCOH ($/kg H₂)', color: '#f3f4f6' },
+                        ticks: { color: '#9ca3af' },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    x: {
+                        title: { display: true, text: 'Carbon Tax ($/tCO₂-eq)', color: '#f3f4f6' },
+                        ticks: { color: '#9ca3af' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    } catch (err) {
+        console.error("Carbon sensitivity update error:", err);
+    }
 }

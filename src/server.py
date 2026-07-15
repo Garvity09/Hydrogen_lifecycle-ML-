@@ -242,6 +242,66 @@ def get_learning_rate_projections(elec_price: float = 50.0, gas_price: float = 6
         "gray": gray_trend
     }
 
+@app.get("/api/carbon_sensitivity")
+def get_carbon_sensitivity(
+    elec_price: float = 50.0,
+    gas_price: float = 6.0,
+    coal_price: float = 75.0,
+    biomass_price: float = 60.0,
+    dr: float = 7.0,
+    yr: int = 2026,
+    dist: float = 500.0
+):
+    """Calculates LCOH of different pathways across a range of carbon taxes (0 to 300 $/tCO2)."""
+    taxes = list(range(0, 301, 10))
+    tc = 0.50 + (0.0006 * dist)
+    
+    green = []
+    blue = []
+    gray = []
+    brown = []
+    
+    for tx in taxes:
+        g = calculate_lcoh_green(
+            elec_price_mwh=elec_price, capex_per_kw=1000.0, opex_percent=3.0,
+            discount_rate=dr, lifetime_years=25, efficiency_kwh_kg=53.0,
+            capacity_factor=0.45, water_cost_m3=2.0, carbon_tax=tx,
+            transport_cost_kg=tc, year=yr
+        )
+        b = calculate_lcoh_fossil(
+            pathway="blue", fuel_price_unit=gas_price, capex_per_kg_annual=6.0,
+            opex_percent=5.0, discount_rate=dr, lifetime_years=30,
+            fuel_req_per_kg=0.18, electricity_kwh_kg=1.8,
+            electricity_price_mwh=elec_price, carbon_tax=tx,
+            transport_cost_kg=tc, year=yr
+        )
+        gr = calculate_lcoh_fossil(
+            pathway="gray", fuel_price_unit=gas_price, capex_per_kg_annual=3.5,
+            opex_percent=4.0, discount_rate=dr, lifetime_years=30,
+            fuel_req_per_kg=0.16, electricity_kwh_kg=0.5,
+            electricity_price_mwh=elec_price, carbon_tax=tx,
+            transport_cost_kg=tc, year=yr
+        )
+        br = calculate_lcoh_fossil(
+            pathway="brown", fuel_price_unit=coal_price, capex_per_kg_annual=8.0,
+            opex_percent=6.0, discount_rate=dr, lifetime_years=30,
+            fuel_req_per_kg=0.015, electricity_kwh_kg=1.0,
+            electricity_price_mwh=elec_price, carbon_tax=tx,
+            transport_cost_kg=tc, year=yr
+        )
+        green.append(g["lcoh"])
+        blue.append(b["lcoh"])
+        gray.append(gr["lcoh"])
+        brown.append(br["lcoh"])
+        
+    return {
+        "taxes": taxes,
+        "green": green,
+        "blue": blue,
+        "gray": gray,
+        "brown": brown
+    }
+
 @app.get("/api/download_data")
 def download_data():
     csv_path = "data/raw_data_scenarios.csv"
